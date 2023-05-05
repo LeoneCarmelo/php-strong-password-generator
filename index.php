@@ -1,27 +1,5 @@
 <?php
-$length = $_GET["length"];
-//var_dump($length);
-
-$data = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-$datatLength = strlen($data) - 1 ;
-$password = [];
-function genPassword($length, $datatLength, $data){
-    if($length != null) {
-        if (is_numeric($length)) {
-            if ($length >= 8) {
-                for ($i=0; $i < $length; $i++) { 
-                    $character = rand(0, $datatLength);
-                    $password[] = $data[$character]; 
-                }
-                echo implode($password);
-            } else {
-                echo "The length has to be 8 charachter minimum";
-            }
-        } else {
-            echo "Please insert a number";
-        }
-    }
-}
+include 'functions.php';
 
 ?>
 
@@ -50,9 +28,9 @@ function genPassword($length, $datatLength, $data){
     <main>
         <div class="container">
             <div class="output my-3 py-3 text-center">
-                <?php 
-                genPassword($length, $datatLength, $data)
-                ?>
+            <?php     
+                genPassword($length,$dataLength,$data)    
+                 ?>
             </div>
             <form action="" class="w-75 mx-auto">
                 <div class="cont_length d-flex justify-content-between">

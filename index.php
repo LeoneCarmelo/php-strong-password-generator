@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'functions.php';
 
 ?>
@@ -28,8 +29,8 @@ include 'functions.php';
     <main>
         <div class="container">
             <div class="output my-3 py-3 text-center w-75 mx-auto rounded-2">
-            <?php     
-                genPassword($length,$dataLength,$data)    
+            <?php   
+                    generator($letters, $numbers, $symbols, $length);
                  ?>
             </div>
             <form action="" class="w-75 mx-auto p-4 rounded-2">

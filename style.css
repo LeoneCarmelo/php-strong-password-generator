@@ -2,7 +2,6 @@
     --body: #001632;
     --h1: #7f8a98;
     --bg-password: #cff4fc;
-    --bg-form:#f8f9fa;
 }
 
 body {
@@ -18,7 +17,7 @@ h1 {
 }
 
 form {
-    background-color: var(--bg-form);
+    background-color: #9bcbfb;
 }
 
 .repetitions {
@@ -27,6 +26,10 @@ form {
 
 .options {
 margin-right: 120px;
+}
+
+.cont_radio {
+    left:4px;
 }
 
 

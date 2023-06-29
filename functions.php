@@ -1,82 +1,61 @@
 <?php
 session_start();
-$length = $_GET["length"];
-$letters = $_GET["lettere"];
-$numbers = $_GET["numeri"];
-$symbols = $_GET["simboli"];
-//var_dump($symbols);
 
-$data = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-$dataLetters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-$dataNumbers = '0123456789';
-$dataSymbols = '!@#$%^&*';
-$dataLength = strlen($data) - 1;
-$dataLettersLength = strlen($dataLetters) - 1;
-$dataNumbersLength = strlen($dataNumbers) - 1;
-$dataSymbolsLength = strlen($dataSymbols) - 1;
-$password = [];
-function genPassword($length, $dataLength, $data)
+function genPass()
 {
-    if ($length != null) {
-        if (is_numeric($length)) {
-            if ($length >= 8) {
-                for ($i = 0; $i < $length; $i++) {
-                    $character = rand(0, $dataLength);
-                    $password[] = $data[$character];
+    if (isset($_GET["length"])) {
+        if (is_numeric($_GET["length"])) {
+            if ($_GET["length"] >= 8) {
+                $pass_length = $_GET["length"];
+                $data = '';
+                if (isset($_GET["lettere"])) {
+                    $data .= 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 }
-                echo implode($password);
-            } else {
-                echo "The length has to be 8 charachter minimum";
-            }
-        } else {
-            echo "Please insert a number";
-        }
-    }
-}
-function generator($letters, $numbers, $symbols, $length)
-{
-    if ($length != null) {
-        if(is_numeric($length)) {
-            if ($length >= 8) {
-                if ($letters === "on" && $numbers === "on" && $symbols === "on") {
-                    $data = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-                    $dataLength = strlen($data) - 1;
-                    genPassword($length, $dataLength, $data);
-                } elseif ($letters === "on" && $numbers === "on" && $symbols === null) {
-                    $data = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                    $dataLength = strlen($data) - 1;
-                    genPassword($length, $dataLength, $data);
-                } elseif ($letters === "on" && $numbers === null && $symbols === "on") {
-                    $data = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*';
-                    $dataLength = strlen($data) - 1;
-                    genPassword($length, $dataLength, $data);
-                } elseif ($letters === null && $numbers === "on" && $symbols === "on") {
-                    $data = '0123456789!@#$%^&*';
-                    $dataLength = strlen($data) - 1;
-                    genPassword($length, $dataLength, $data);
-                } elseif ($letters === "on" && $numbers === null && $symbols === null) {
-                    $data = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    $dataLength = strlen($data) - 1;
-                    genPassword($length, $dataLength, $data);
-                } elseif ($letters === null && $numbers === "on" && $symbols === null) {
-                    $data = '0123456789';
-                    $dataLength = strlen($data) - 1;
-                    genPassword($length, $dataLength, $data);
-                } elseif ($letters === null && $numbers === null && $symbols === "on") {
-                    $data = '!@#$%^&*';
-                    $dataLength = strlen($data) - 1;
-                    genPassword($length, $dataLength, $data);
+                if (isset($_GET["numeri"])) {
+                    $data .= '0123456789';
+                }
+                if (isset($_GET["simboli"])) {
+                    $data .= '!@#$%^&*-+{}:></?)(][';
+                }
+                if ($_GET["repetitions"] == 'si') {
+                    echo get_pass($data, $pass_length); 
                 } else {
-                    echo "Please select one of the options below";
+                    echo get_pass_no_repetitions($data, $pass_length);
                 }
-
             } else {
-                echo "The length has to be at least 8 charachter";   
+                echo 'The length must 8 or more characters';
             }
         } else {
-            echo "Please insert a number";
+            echo 'Type a number';
         }
     } else {
-        echo "Please insert how long the password has to be";
+        echo 'Insert the length';
     }
 }
+
+function get_pass($data, $length) {
+    $password = '';
+    $arr_data = str_split($data, 1);
+    //var_dump(count($arr_data));
+    for ($i=0; $i < $length; $i++) { 
+        $character = rand(0, count($arr_data) -1);
+        $password .= $data[$character]; 
+    }
+    return $password;
+}
+
+function get_pass_no_repetitions($data, $length) {
+    $password = '';
+    $arr_data = str_split($data, 1);
+    for ($i=0; $i < $length; $i++) { 
+        $character = rand(0, count($arr_data) -1);
+        if (str_contains($password, $data[$character])) {
+            $i--;
+        } else {
+            $password .= $data[$character]; 
+        }
+    }
+    return $password;
+
+}
+ 
